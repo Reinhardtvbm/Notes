@@ -18,4 +18,18 @@ Compiler optimisations and hardware techniques attempt to maximise instruction-l
 - Output dependancy
 - Antidependancy
 
-# 
+# 3. Design Issues
+## 3.1 Instruction-Level Parallelism and Machine Parallelism
+Instruction-level refers to the ability of instructions to be run at the same time, whereas machine parallelism refers to the computer system's ability to facilitate parallelising of instructions.
+
+## 3.2 Instruction Issue Policy
+The machine must be able to identify instruction-level parallelism, and perform fetching, decoding, and execution in parallel. **Instruction issue** is the process of initiating execution of an instruction using the processor's functional units. 
+**Instruction issue policy** is the protocol, or method used to do this.
+
+### 3.2.1 In-Order issue and in-order completion
+Instructions are issued in the order as with sequential execution, and also written in that order
+
+### 3.2.1 In-Order issue and out-of-order completion
+
+
+### 3.2.1 Out-of-order issue and out-of-order completion

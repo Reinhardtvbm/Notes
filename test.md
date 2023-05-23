@@ -55,9 +55,18 @@
         - Psuedorandom Number Generation Using Hash Functions and MACs
 
 ## EAS
-    - Chapter 16: Processor Structure and Function
-    - Chapter 17: Reduced Instruction Set Computers
-    - Chapter 18: Instruction-Level Parallelism and Superscalar Processors
-    - Chapter 20: Parallel Processing
-    - Chapter 21: Multicore Computers
+- Chapter 16: Processor Structure and Function
+- Chapter 17: Reduced Instruction Set Computers
+- Chapter 18: Instruction-Level Parallelism and Superscalar Processors
+  - 18.1: Overview
+  - 18.2: Design Issues
+    - Instruction-level vs Machine parallelism
+    - Instruction Issue Policy
+    - Register Renaming
+    - Machine Parallelism
+    - Branch Prediction
+    - Superscalar Execution
+    - Superscalar Implementation
+- Chapter 20: Parallel Processing
+- Chapter 21: Multicore Computers
 
