@@ -32,3 +32,21 @@ These may be somewhat general purpose. Examples include:
 #### Condition Codes
 These are the least visible to the user. Also called *flags*, are bits set in the hardware as a result of operations. These codes are collected into one or more registers. The programmer cannot alter these bits. 
 
+### Control and Status Registers
+Four essential control and status registers:
+- **program counter(PC)**: address of next instruction to be fetched
+- **instruction register (IR)**: contains the instruction most recently fetched
+- **memory address register (MAR)**: address of a location in memory 
+- **memory buffer register (MBR)**: contains a word of data that is to be written to memory or has been most recently read from memory 
+
+These registers are used for movement of data between the processor and memory. 
+
+Many processors also include a register called the *program status word* (PSW), which typically contains condition codes and other status information:
+- **sign**: the sign bit of the last arithmetic operation
+- **zero**: set when the result is zero
+- **carry**: set if the operation resulted in a carry
+- **overflow**: indicates arithmetic overflow
+- **interrupt enable/disable**: used to enable/disable interrupts
+- **supervisor**: indicates whether the program is running in supervisor or user mode. some priveleged instructions can only be executed in supervisor mode.
+
+
