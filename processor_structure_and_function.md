@@ -49,4 +49,15 @@ Many processors also include a register called the *program status word* (PSW), 
 - **interrupt enable/disable**: used to enable/disable interrupts
 - **supervisor**: indicates whether the program is running in supervisor or user mode. some priveleged instructions can only be executed in supervisor mode.
 
+Control information is often times specifically included in the design for operating system support. It is common to dedicate the first few hundred or thousand words of memory for control purposes.
 
+
+## Instruction Cycle
+An instruction cycle includes the following stages:
+- **fetch**: read the next instruction into the processor
+- **execute**: interpred the opcode and perform the indicated operation
+- **interrupt**: if there is an interrupt, the current state must be saved, and then service the interrupt
+
+## Instruction Pipelining
+### Pipelining Strategy
+Pipelining exploits the fact that an instruction consists of a number of stages. As a simple example consider the fetch and execute stages. There are times during execute that main memory is not being accessed, so we can fetch the next instruction in parallel to the execute stage. This is called *pre fetch* or *fetch overlap*.
