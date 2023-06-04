@@ -61,3 +61,7 @@ An instruction cycle includes the following stages:
 ## Instruction Pipelining
 ### Pipelining Strategy
 Pipelining exploits the fact that an instruction consists of a number of stages. As a simple example consider the fetch and execute stages. There are times during execute that main memory is not being accessed, so we can fetch the next instruction in parallel to the execute stage. This is called *pre fetch* or *fetch overlap*.
+
+This has the potential of doubling the speed of execution, however this outcome is unlikely for the following reasons:
+- time to execute is generally longer than the time to execute, thus the fetch stage may have to wait for some time before it can empty its buffer
+- a conditional branch instruction makes the address of the next instruction to fetch unknown. So the fetch stage must wait until execute is done for these instructions
