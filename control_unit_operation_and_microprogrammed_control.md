@@ -25,9 +25,64 @@ At the beginning of the fetch cycle, the address of the next instruction is in t
     -  MBR <- Memory ; PC <- (PC) + I
     -  IR <- (MBR)
 ```
-where *I* is the instruction length.
+where *I* is the instruction length, and each step requires one clock cycle. Not that the PC increment could have been grouped with the third step as well. The groupings of microinstructions follow two simple rules:
+1. The proper sequence of events must be followed.
+2. Conflicts must be avoided. One cannot read to and write from the same register in one time unit. ex. (MBR <- Memory) cannot be grouped with (IR <- MBR).
 
+### The Indirect Cycle
+Next we need to source operands. If the instruction specifies an indirect address, then an indirect cycle must precede the execute cycle. The data flow includes the following micro-instructions:
+```
+    -  MAR <- (IR(Address))
+    -  MBR <- Memory
+    -  IR(Address) <- (MBR(Address))
+```
+The address field of the IR is moved to the MAR, then the MBR is loaded with the word from memory. Finally, the IR is updated from the MBR. So now it contains a direct address. Now it is ready for the execute cycle
 
+### The Interrupt Cycle
+At the completion of the execute cycle, a test is made to determine whether any enabled interrupts have occurred. If so, the interrupt cycle occurrs. We have
+```
+    -  MBR <- (PC)
+    -  MAR <- Save_Address ; PC <- Routine_Address
+    -  Memory <- (MBR)
+```
+The MBR gets the contents of the PC so they can be saved for return from interrupt. Then the MAR is loaded with the address at which the contents of the PC are to be saved, and the PC is loaded with address of the start of the interrupt-processing routine. Then we save the MBR to memory. 
 
+### The Execute Cycle
+The execute cycle is not so predictable. There are many opcodes, therefore there are many different sequences of microinstructions that can occur. The control unit examines the opcode and generates a sequence of micro-operations based on the value of the opcode. This is referred to as instruction decoding. consider `ADD R1, X`:
+```
+    -  MAR <- (IR(address))
+    -  MBR <- Memory
+    -  R1  <- (R1) + (MBR)
+```
 
+### The Instruction Cycle
+Now we need to tie the sequence of micro-instructions together. We use an instruction cycle code (ICC) which represents one of the four cycles: fetch, indirect, execute and interrupt. The ICC is set at the end of each cycle.
 
+## Control of the Processor
+### Functional Requirements
+Now that the functioning of the processor has been decomposed into its most elementary components, we can define exactly what it is that the control unit must cause to happen. Thus we can define the functional requirements of the control unit. Those functions that the control unit must perform. The following two tasks are performed by the control unit:
+- **Sequencing**: The control unit causes the processor to step through a series of micro-operations in the proper sequence, based on the program being executed.
+- **Execution**: The control unit causes each micro-operation to be performed.
+The key to this is control signals
+
+### Control Signals
+The control unit has the following input signals:
+- **clock**
+- **IR**
+- **Flags**
+- **Control signals from the control bus**
+
+and it has the following outputs:
+- **Control signals within the processor**
+- **Control signals to the control bus**
+
+There are three types of control signals:
+- **ALU function**
+- **Data paths**: internal flow of data between registers
+- **System bus**: control signals to control lines of system bus (memory READ)
+
+## Hardwired Implementation
+With this implementation, the control unit is essentially a state machine. Input logic signals are transformed into a set of output logic signals. The key inputs are the IR, clock, flags, and control bus signals. Usually a decoder is used to transform each opcode into a single signal that is high or low, to simplify the combinational logic. Then using the opcode, the instruction cycle state, and the other input sugnals, a boolean logic expression is derived for each control signal.
+
+## Microprogrammed Control
+This is mainly used for CISC systems. Their instructions are broken down into RISC-like instructions which are stored in a control memory. This control memory holds the microinstructions. A sequence of microinstructions is called a microprogram, or firmware.
