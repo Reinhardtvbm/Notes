@@ -71,3 +71,34 @@ Multithreading is achieved by splitting the instruction stream into several smal
 - **Thread**: A dispatchable unit of work within a process. Includes a processor context, and its own data area for the stack. It executes sequentially and is interruptible so that the processor can turn to another thread.
 - **Thread switch**: The act of switching processor control from one thread to another within the same process. Typically less costly than a process switch.
 
+### 4.2 Approaches to Explicit Multithreading
+There are four principle approaches to multithreading:
+#### Interleaved multithreading
+Also known as **fine-grained multithreading**. The processor deals with two or more thread contexts at a time, swithing from one thread to another at each clock cycle. If a thread is blocked because of data dependancies or memory latencies, that thread is skipped and a ready thread is executed.
+
+#### Blocked Multithreading
+Also known as **coarse-grain multithreading**. The instructions of a thread are executed successively until an event occurs that may cause delay, such as a cache miss. This even induces a switch to another thread. This approach is effective on an in-order processor that would stall the pipeline for a delay event such as a cache miss. 
+
+#### Simultaneous multithreading (SMT)
+Instructions are simultaneously issued from multiple threads to the execution units of a superscalar processor. This combines the wide superscalar instruction issue capability with the use of multiple thread contexts. 
+
+#### Chip multiprocessing
+In this case, multiple cores are implemented on a single chip and each core handles seperate threads. The advantage of this approach is that the available logic area on a chip is used effectively without depending on ever-increasing complexity in pipeline design. This is referred to a **multicore**. 
+
+We can then contrast different pipelining architectures with and without multithreading:
+- **Single-threaded scalar**: simple pipeline found in traditional RISC/CISC machine with no multithreading
+- **Interleaved multithreaded scalar**: The easiest approach to implement. By switching threads at each clock cycle, the pipline stages can be kept fully occupied. The hardware must be able to switch threads between instruction cycles.
+- **Blocked multithreaded scalar**: A single thread is executed until a latency even occurs that would stop the pipeline, at which time a thread switch occurs.
+
+Remember that although a mutlithreaded scalar processor offers better processor utilisation, it does so at the cost of single thread performance. 
+
+- **Superscalar**: basic superscalar with no multithreading. During some cycles, not all available issue slots are occupied, which is referred to as *horizontal loss*. During other cycles, no instructions can be issued, which is called *vertical loss*
+- **Interleaved multithreaded superscalar**: During each cycle, as many instructions as possible from one thread are issued. Thread switching occurs between cycles.
+- **Blocked multithreaded superscalar**: Like blocked mutithreaded scalar, but with superscalar pipeline. Can also be thought of as interleaved multithreaded superscalar, but thread switching only occurs with a latency event on the current thread.
+- **Very long instruction word (VLIW)**: Multiple instructions are placed in a single word. Typically constructed by the comiler. Instructions that can be executed in parallel are placed in the same word. If it is not possible to completely fill a word with instructions, no-ops are used.
+- **Interleaved multithreading VLIW**: similar efficiency to interleaved mutithreading superscalar
+- **Blocked multithreading LVIW**
+
+Final two approached enable parallel, simultaneous execution of multiple threads:
+- **Simultaneous multithreading**: Capable of issueing multiple instructions at the same time. So horizontal slots can typically be filled by simply placing other threads in them, providing a high level of efficiency.
+- **Chip multiprocessor**: The processor has seperate independant cores. The diagram in the textbook shows a quad-core processor, which each have a two-issue superscalar architecure, and can therefore issue up to two instructions per cycle. 
