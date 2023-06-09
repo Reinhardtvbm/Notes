@@ -51,14 +51,23 @@ We can simply rely on compilers and operating systems to deal with the problem. 
 We refer to thees as *cache coherence protocols*. They provide dynamic recognition at run time. This allows for a more effective use of cache. This is also hidden from the programmer/compiler, allowing them to use their brains less. They can be generally divided into two categories: **directory protocols**, and **snoopy protocols**.
 
 #### 3.2.1 Directory Protocols
-These collect and maintain information about where copies of lines reside. Typically in a centralised controller that is part of the main memory controller, and a directory that is stored in main memory. It contains state information about the contents of the various local caches. When an individual cache controller makes a request, the centralised controller checks and issues the appropriate commands for data transfer between memory and cache**s**. 
+These collect and maintain information about where copies of lines reside. Typically in a centralised controller that is part of the main memory controller, and a directory that is stored in main memory. It contains state information about the contents of the various local caches. When an individual cache controller makes a request, the centralised controller checks and issues the appropriate commands for data transfer between memory and caches
 
-Typically, the controller knows which processors have copies of which lines. Before any processor can write to a local copy of a line, it must request exclusive access to that line from the controller. The controller will have all the other processors that contain that line know that it is about to become invalid, and then allow the first processor to write to it. If some other processor then tries to read that line, the controller will be notified, and have the first processor write that line back to memory so that the valid data can be retrieved. 
-
-Directory schemes suffer from a central bottleneck and excessive communication overhead, but can be effective in large scale systems with many busses. 
-
-#### 3.2.2 Snoopy Protocols
+### 3.3 The MESI Protocol
+Each line has two status bits per tag, so that is can be in one of four states:
+- **Modified**: the line is different from main memory and is only available in this cache
+- **Exclusive**: the line is the same as in main memory and is only present in this this cache
+- **Shared**: the line is the same as in main memory and exists in more than one cache
+- **Invalid**: the line does not contain valid data
 
 ## 4 Multithreading and Chip Multiprocessors 
+Multithreading is achieved by splitting the instruction stream into several smaller streams, known as threads, which can be executed in parallel.
 
+### 4.1 Implicit and Explicit Multithreading
+- **Process**: an instance of a program running on a computer; it has two key characteristics:
+  - **Resource ownership**: has its own virtual address space for its process image. a process may be allocated control over resources in the computer system
+  - **Scheduling/execution**: The execution of the process follows an execution path (trace) through one or more programs. This execution may be interleaved with other processes. Thus a process has an execution state.
+- **Process switch**: An operation that switches the processor from one process to another, by saving the process' information to create room for another.
+- **Thread**: A dispatchable unit of work within a process. Includes a processor context, and its own data area for the stack. It executes sequentially and is interruptible so that the processor can turn to another thread.
+- **Thread switch**: The act of switching processor control from one thread to another within the same process. Typically less costly than a process switch.
 

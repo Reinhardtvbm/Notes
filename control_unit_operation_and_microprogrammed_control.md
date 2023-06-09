@@ -85,4 +85,6 @@ There are three types of control signals:
 With this implementation, the control unit is essentially a state machine. Input logic signals are transformed into a set of output logic signals. The key inputs are the IR, clock, flags, and control bus signals. Usually a decoder is used to transform each opcode into a single signal that is high or low, to simplify the combinational logic. Then using the opcode, the instruction cycle state, and the other input sugnals, a boolean logic expression is derived for each control signal.
 
 ## Microprogrammed Control
-This is mainly used for CISC systems. Their instructions are broken down into RISC-like instructions which are stored in a control memory. This control memory holds the microinstructions. A sequence of microinstructions is called a microprogram, or firmware.
+This is mainly used for CISC systems. Their instructions are broken down into RISC-like instructions which are stored in a control memory. This control memory holds the microinstructions. A sequence of microinstructions is called a microprogram, or firmware. Each microintstruction simply generates a set of control signals. 
+
+A microinstruction contains a control word, consisting of the output control signals, a jump/no jump condition, and the address of the next microinstruction if the jump condition is met.  
